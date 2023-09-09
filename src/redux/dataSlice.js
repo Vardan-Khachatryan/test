@@ -35,9 +35,14 @@ export const dataSlice = createSlice({
     deleteData(state, action) {
       state.data = state.data.filter((obj) => obj.id !== action.payload);
     },
+    editData(state, action) {
+      const { id } = action.payload;
+      state.data = state.data.filter((obj) => obj.id !== id);
+      state.data.push(action.payload);
+    },
   },
 });
 
-export const { addData, deleteData } = dataSlice.actions;
+export const { addData, deleteData, editData } = dataSlice.actions;
 
 export default dataSlice.reducer;

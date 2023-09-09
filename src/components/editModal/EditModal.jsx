@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { addData } from "../../redux/dataSlice";
 import Modal from "@mui/material/Modal";
-import { AiFillFileAdd } from "react-icons/ai";
 import TextField from "@mui/material/TextField";
 import { useDispatch } from "react-redux";
+import { BsPencil } from "react-icons/bs";
+import { editData } from "../../redux/dataSlice";
 
 const style = {
   position: "absolute",
@@ -19,33 +19,37 @@ const style = {
   p: 4,
 };
 
-export const BasicModal = () => {
+export const EditModal = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [modalData, setModalData] = useState({
+  const [editsData, setEditData] = useState({
     id: "",
     name: "",
-    parent_id: null,
+    parent_id: !null ? "" : undefined,
   });
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleModalChanges = (prop, event) => {
-    setModalData({
-      ...modalData,
+  const handleEdit = (prop, event) => {
+    setEditData({
+      ...editsData,
       ...{ [prop]: event.target.value },
     });
   };
   const handleAddData = () => {
-    const newModalData = { ...modalData, id: Number(modalData.id) };
-    setModalData({
+    const newEditData = {
+      ...editsData,
+      id: Number(editsData.id),
+      parent_id: Number(editsData.parent_id),
+    };
+    setEditData({
       id: "",
       name: "",
-      parent_id: null,
+      parent_id: !null ? "" : undefined,
     });
-    dispatch(addData(newModalData));
+    dispatch(editData(newEditData));
 
-    localStorage.setItem("Data", JSON.stringify(newModalData));
+    localStorage.setItem("Data", JSON.stringify(newEditData));
 
     handleClose();
   };
@@ -54,8 +58,8 @@ export const BasicModal = () => {
     <div>
       <Button
         variant="outlined"
+        startIcon={<BsPencil />}
         onClick={handleOpen}
-        startIcon={<AiFillFileAdd />}
       />
       <Modal
         open={open}
@@ -69,16 +73,16 @@ export const BasicModal = () => {
             label="ID"
             variant="outlined"
             type="number"
-            value={modalData.id}
-            onChange={(e) => handleModalChanges("id", e)}
+            value={editsData.id}
+            onChange={(e) => handleEdit("id", e)}
           />
           <TextField
             id="outlined-basic"
             label="Name"
             type="text"
             variant="outlined"
-            value={modalData.name}
-            onChange={(e) => handleModalChanges("name", e)}
+            value={editsData.name}
+            onChange={(e) => handleEdit("name", e)}
           />
 
           <TextField
@@ -86,12 +90,12 @@ export const BasicModal = () => {
             label="Parent_id"
             type="text"
             variant="outlined"
-            value={modalData.parent_id}
-            onChange={(e) => handleModalChanges("parent_id", e)}
+            value={editsData.parent_id}
+            onChange={(e) => handleEdit("parent_id", e)}
           />
 
           <Button variant="outlined" onClick={handleAddData}>
-            ADD
+            EDIT
           </Button>
         </Box>
       </Modal>

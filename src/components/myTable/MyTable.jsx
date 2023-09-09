@@ -8,10 +8,10 @@ import Paper from "@mui/material/Paper";
 import TableBody from "@mui/material/TableBody";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { BsPencil } from "react-icons/bs";
 import { BasicModal } from "../modal/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteData } from "../../redux/dataSlice";
+import { EditModal } from "../editModal/EditModal";
 
 export const MyTable = () => {
   const data = useSelector((state) => state.data.data);
@@ -31,6 +31,9 @@ export const MyTable = () => {
               <TableCell align="left">
                 {" "}
                 <BasicModal />
+              </TableCell>
+              <TableCell align="left" size="small">
+                <EditModal />
               </TableCell>
             </TableRow>
           </TableHead>
@@ -52,9 +55,7 @@ export const MyTable = () => {
                       onClick={() => handleDelete(obj.id)}
                     />
                   </TableCell>
-                  <TableCell align="right" size="small">
-                    <Button variant="outlined" startIcon={<BsPencil />} />
-                  </TableCell>
+
                   <TableCell align="right" size="small">
                     <BasicModal />
                   </TableCell>
